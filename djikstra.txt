@@ -1,0 +1,51 @@
+INF = float('inf')
+
+def dijkstra(graph, source):
+    n = len(graph)
+    dist = [INF] * n
+    visited = [False] * n
+
+    dist[source] = 0
+
+    for _ in range(n):
+        # Find minimum distance node
+        min_dist = INF
+        u = -1
+
+        for i in range(n):
+            if not visited[i] and dist[i] < min_dist:
+                min_dist = dist[i]
+                u = i
+
+        if u == -1:
+            break
+
+        visited[u] = True
+
+        # Update neighbors
+        for v in range(n):
+            if graph[u][v] != 0 and not visited[v]:
+                if dist[u] + graph[u][v] < dist[v]:
+                    dist[v] = dist[u] + graph[u][v]
+
+    return dist
+
+
+# ------- INPUT -------
+n = int(input("Enter number of nodes: "))
+
+print("Enter adjacency matrix:")
+graph = []
+for _ in range(n):
+    row = list(map(int, input().split()))
+    graph.append(row)
+
+source = int(input("Enter source node: "))
+
+# Run algorithm
+distances = dijkstra(graph, source)
+
+# Output
+print("Shortest distances:")
+for i in range(n):
+    print(f"To node {i} = {distances[i]}")
